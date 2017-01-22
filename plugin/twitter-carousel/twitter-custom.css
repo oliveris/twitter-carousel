@@ -18,18 +18,18 @@
 /** twitter feed container **/
 .twitter-feed-container
 {
-    background-image: url("../../img/twitter-logo-web.jpg");
+    background-image: url("img/twitter-logo-web.jpg");
     background-size: 80% auto;
     background-position: center center;
     background-repeat: no-repeat;
     min-height:250px;
-    padding-top:60px;
+    padding-top:50px;
 }
 
 /** carousel adjustments **/
 #tweetList .item
 {
-    padding:20px 50px;
+    padding:5px 50px;
     font-size:14px;
     min-height:80px;
 }

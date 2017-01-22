@@ -1,6 +1,6 @@
 <!-- Start of the Twitter container -->
 <div class="twitter-feed-container">
-    <h3><span class="font-14">Latest from</span> <a class="blue-link" href="https://twitter.com/Samuel_Oliveri" target="_blank">@Samuel_Oliveri</a></h3>
+    <h3><span class="font-14">Latest from</span> <a class="blue-link" href="https://twitter.com/<?php echo $twitterUsername; ?>" target="_blank">@<?php echo $twitterUsername; ?></a></h3>
     <!-- Start of the bootstrap carousel -->
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
 

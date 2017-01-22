@@ -6,7 +6,7 @@ $(document).ready(function() {
     var i = 1;
 
     //get the last 10 Twitter post and stores them in a JSON array
-    $.getJSON('tweets_json.php?count=10', function(data) {
+    $.getJSON('tweets_json.php?count=' + twitterGlobals.tweetCount + '&screen_name=' + twitterGlobals.twitterUsername + '', function(data) {
         listTweets(data);
     });
 
@@ -30,7 +30,8 @@ $(document).ready(function() {
             }
 
             //append the variable data into the new tweet div
-            $('.tweet-' + i + '').append(checkURL(data[index]['text']));
+            $('.tweet-' + i + '').append(checkURL(convertUserMentions(convertHashtags(data[index]['text']))));
+            //$('.tweet-' + i + '').append('<p>' + data[index]['created_at'] + '</p>');
 
             //increments the value of i
             increment();
@@ -44,6 +45,26 @@ $(document).ready(function() {
     function increment(){
         i++;
         return i;
+    }
+
+    /**
+     * Function to check the string to look for user mentions '@'
+     * @param text
+     * @return {*}
+     */
+    function convertUserMentions(text) {
+        html = text.replace(/@(\S+)/g, '<a target="_blank" href="https://twitter.com/#!/$1">@$1</a>');
+        return html;
+    }
+
+    /**
+     * Function to check the string to look for hashtags '#'
+     * @param text
+     * @return {*}
+     */
+    function convertHashtags(text) {
+        html = text.replace(/@(\S+)/g, '<a target="_blank" href="https://twitter.com/#!/$1">@$1</a>');
+        return html;
     }
 
     /**
