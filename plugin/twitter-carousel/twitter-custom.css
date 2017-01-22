@@ -3,20 +3,14 @@
  * Date: 21/01/2017
  */
 
-/** buffer classes top **/
-.buffer-top-60
-{
-    padding-top:60px;
-}
-
 /** Link styles **/
-a.blue-link
+.twitter-feed-container a.blue-link
 {
     color:#006CB8;
 }
 
 /** font styles **/
-.font-14
+.twitter-feed-container .font-14
 {
     font-size:14px;
 }
@@ -24,11 +18,12 @@ a.blue-link
 /** twitter feed container **/
 .twitter-feed-container
 {
-    background-image: url("../img/twitter-logo-web.jpg");
+    background-image: url("../../img/twitter-logo-web.jpg");
     background-size: 80% auto;
     background-position: center center;
     background-repeat: no-repeat;
     min-height:250px;
+    padding-top:60px;
 }
 
 /** carousel adjustments **/
