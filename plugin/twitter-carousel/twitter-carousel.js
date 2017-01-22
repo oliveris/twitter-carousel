@@ -30,7 +30,8 @@ $(document).ready(function() {
             }
 
             //append the variable data into the new tweet div
-            $('.tweet-' + i + '').append(checkURL(convertUserMentions(convertHashtags(data[index]['text']))));
+            // $('.tweet-' + i + '').append(checkURL(convertUserMentions(convertHashtags(data[index]['text']))));
+            $('.tweet-' + i + '').append(twitterLinks(data[index]['text']));
             //$('.tweet-' + i + '').append('<p>' + data[index]['created_at'] + '</p>');
 
             //increments the value of i
@@ -47,43 +48,40 @@ $(document).ready(function() {
         return i;
     }
 
-    /**
-     * Function to check the string to look for user mentions '@'
-     * @param text
-     * @return {*}
-     */
-    function convertUserMentions(text) {
-        html = text.replace(/@(\S+)/g, '<a target="_blank" href="https://twitter.com/#!/$1">@$1</a>');
-        return html;
-    }
-
-    /**
-     * Function to check the string to look for hashtags '#'
-     * @param text
-     * @return {*}
-     */
-    function convertHashtags(text) {
-        html = text.replace(/@(\S+)/g, '<a target="_blank" href="https://twitter.com/#!/$1">@$1</a>');
-        return html;
-    }
-
-    /**
-     * Function to convert string value words with http and https with links
-     * @param text
-     * @returns {string}
-     * @constructor
-     */
-    function checkURL(text) {
-        var url1 = /(^|&lt;|\s)(www\..+?\..+?)(\s|&gt;|$)/g,
-            url2 = /(^|&lt;|\s)(((https?|ftp):\/\/|mailto:).+?)(\s|&gt;|$)/g;
-
-        var html = $.trim(text);
-        if (html) {
-            html = html
-                .replace(url1, '$1<a class="blue-link" target="_blank" href="http://$2">$2</a>$3')
-                .replace(url2, '$1<a class="blue-link" target="_blank" href="$2">$2</a>$5');
-        }
-        return html;
+    // Convert URLs (w/ or w/o protocol), @mentions, and #hashtags into anchor links
+    function twitterLinks(text)
+    {
+        var base_url = 'http://twitter.com/';   // identica: 'http://identi.ca/'
+        var hashtag_part = 'search?q=#';        // identica: 'tag/'
+        // convert URLs into links
+        text = text.replace(
+            /(>|<a[^<>]+href=['"])?(https?:\/\/([-a-z0-9]+\.)+[a-z]{2,5}(\/[-a-z0-9!#()\/?&.,]*[^ !#?().,])?)/gi,
+            function($0, $1, $2) {
+                return ($1 ? $0 : '<a href="' + $2 + '" target="_blank">' + $2 + '</a>');
+            });
+        // convert protocol-less URLs into links
+        text = text.replace(
+            /(:\/\/|>)?\b(([-a-z0-9]+\.)+[a-z]{2,5}(\/[-a-z0-9!#()\/?&.]*[^ !#?().,])?)/gi,
+            function($0, $1, $2) {
+                return ($1 ? $0 : '<a href="http://' + $2 + '">' + $2 + '</a>');
+            });
+        // convert @mentions into follow links
+        text = text.replace(
+            /(:\/\/|>)?(@([_a-z0-9\-]+))/gi,
+            function($0, $1, $2, $3) {
+                return ($1 ? $0 : '<a href="' + base_url + $3
+                    + '" title="Follow ' + $3 + '" target="_blank">@' + $3
+                    + '</a>');
+            });
+        // convert #hashtags into tag search links
+        text = text.replace(
+            /(:\/\/[^ <]*|>)?(\#([_a-z0-9\-]+))/gi,
+            function($0, $1, $2, $3) {
+                return ($1 ? $0 : '<a href="' + base_url + hashtag_part + $3
+                    + '" title="Search tag: ' + $3 + '" target="_blank">#' + $3
+                    + '</a>');
+            });
+        return text;
     }
 
 });
